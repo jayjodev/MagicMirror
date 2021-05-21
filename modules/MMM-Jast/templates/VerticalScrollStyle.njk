@@ -1,0 +1,17 @@
+{% macro render() %}
+  {% if config.showDepotGrowth %}
+    {% set itemCount = stocks.length + 1 %}
+  {% else %}
+    {% set itemCount = stocks.length %}
+  {% endif %}
+  {% set percentPerItem = 100 / itemCount %}
+  <style type="text/css">
+  @keyframes tickerv {
+  {% for i in range(0, itemCount) -%}
+    {{ i *  percentPerItem }}% {
+      margin-top: calc(var(--size) * -1.44 * {{ i }});
+    }
+  {% endfor %}
+  }
+  </style>
+{% endmacro %}

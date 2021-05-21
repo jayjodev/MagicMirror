@@ -1,0 +1,59 @@
+{% import "templates/VerticalScrollStyle.njk" as vss with context %}
+
+{% macro render() %}
+  {% if config.scroll == "vertical" %}
+    {{ vss.render(config) }}
+    {% if config.showDepotGrowth %}
+      {% set fadeSpeed =  stocks.length + 1 %}
+    {% else %}
+      {% set fadeSpeed =  stocks.length %}
+    {% endif %}
+      {% set animationStyle = ' style="animation-duration: ' + fadeSpeed * config.fadeSpeedInSeconds + 's"' %}
+  {% endif %}
+    <ul {{ animationStyle | safe }}>
+      {% for stock in stocks %}
+        <li class="jast-stock">{{ utils.getStockName(stock) }}:
+          {% if utils.getStockChange(stock) > 0 %}
+            {% set colorClass = "high" %}
+          {% elif utils.getStockChange(stock) < 0 %}
+            {% set colorClass = "low " %}
+          {% else %}
+            {% set colorClass = "" %}
+          {% endif %}
+          <span class="{{ colorClass }}">
+            {{ utils.getCurrentValueAsString(stock) }}
+            {% if colorClass and (config.showChangeValue or config.showChangePercent) %}
+              <span class="jast-change">
+                ({% if config.showChangeValue %}<span class="jast-change-value">{% if colorClass == "high" %}+{%endif%}{{ utils.getStockChangeAsString(stock) }}</span>{% endif %}
+                {% if config.showChangePercent %}<span class="jast-change-value">{% if colorClass == "high" %}+{%endif%}{{ utils.getStockChangePercentAsString(stock) }}</span>{% endif %})
+              </span>
+            {% endif %}
+          </span>
+        </li>
+      {% endfor %}
+    {% if config.showDepot or config.showDepotGrowth or config.showDepotGrowthPercent%}
+      {% set depot = utils.getDepot(stocks) %}
+        <li class="jast-stock">{{ "depot" | translate | safe }}
+          {% for entry in depot %}
+            {% if entry.value > entry.oldValue %}
+              {% set colorClass = "high" %}
+            {% elif entry.value < entry.oldValue %}
+              {% set colorClass = "low " %}
+            {% else %}
+              {% set colorClass = "" %}
+            {% endif %}
+            <span class="{{ colorClass }}{% if loop.index != 1 %} jast-multi-currency{% endif %}">
+              {% if config.showDepot %} {{ utils.getDepotValueAsString(entry) }} {% endif %}
+              {% if config.showDepotGrowth or config.showDepotGrowthPercent %}
+                {% if config.showDepot %}<span class="jast-change">({% endif %}
+                {% if config.showDepotGrowth %}<span class="jast-change-value">{% if colorClass == "high" %}+{%endif%}{{ utils.getDepotChangeAsString(entry) }}</span>{% endif %}
+                {% if config.showDepotGrowthPercent %}<span class="jast-change-value">{% if colorClass == "high" %}+{%endif%}{{ utils.getDepotChangePercentAsString(entry) }}</span>{% endif %}
+                {% if config.showDepot %})</span>{% endif %}
+              {% endif %}
+            
+            </span>
+          {% endfor %}
+        </li>
+      {% endif %}
+    </ul>
+{% endmacro %}
