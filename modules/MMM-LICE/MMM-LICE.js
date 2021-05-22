@@ -12,11 +12,12 @@ Module.register("MMM-LICE", {
 		symbols: "", // Add in config file
 		useHeader: false, // true if you want a header
 		header: "", // Any text you want. useHeader must be true
-		maxWidth: "300px",
+		fontSize: "xx-large",
 		animationSpeed: 3000,
 		initialLoadDelay: 4250,
 		retryDelay: 2500,
-		updateInterval: 45 * 60 * 1000 // 45 min = 992 in a 31 day month (1000 free per month)
+		updateInterval: 12 * 60 * 60 * 1000, // 12 hours min = 2 * 31 in a 31 day month (250 free per month)
+		timeLocation: ""
 	},
 
 	getStyles: function () {
@@ -55,40 +56,40 @@ Module.register("MMM-LICE", {
 		}
 
 		var LICE = this.LICE;
-
 		var top = document.createElement("div");
 		top.classList.add("list-row");
 
 		// timestamp
+		var currentdate = new Date().toLocaleString("en-GB", { timeZone: this.config.timeLocation });
 		var timestamp = document.createElement("div");
-		timestamp.classList.add("small", "bright", "timestamp");
-		timestamp.innerHTML = "Rate as of " + moment.unix(LICE.timestamp).format("h:mm a") + " today";
+		timestamp.classList.add("align-right", "xsmall", "bright", "timestamp");
+		timestamp.innerHTML = "Updated: " + currentdate + " " + this.config.timeLocation;
 		wrapper.appendChild(timestamp);
 
 		// source currency
-		var source = document.createElement("div");
-		source.classList.add("small", "bright", "source");
-		source.innerHTML = "Source Currency = " + this.config.source;
-		wrapper.appendChild(source);
+		// var source = document.createElement("div");
+		// source.classList.add("align-right", "small", "bright", "source");
+		// source.innerHTML = "Source Currency = " + this.config.source;
+		// wrapper.appendChild(source);
 
-		// create table
-		var Table = document.createElement("table");
+		// // create table
+		// var Table = document.createElement("table");
 
-		// create row and column for Currency
-		var Row = document.createElement("tr");
-		var Column = document.createElement("th");
-		Column.classList.add("align-left", "small", "bright", "Currency");
-		Column.innerHTML = "Currency";
-		Row.appendChild(Column);
+		// // create row and column for Currency
+		// var Row = document.createElement("tr");
+		// var Column = document.createElement("th");
+		// Column.classList.add("align-left", "small", "bright", "Currency");
+		// Column.innerHTML = "Currency";
+		// Row.appendChild(Column);
 
-		// create row and column for Rate
-		var Rate = document.createElement("th");
-		Rate.classList.add("align-left", "small", "bright", "Rate");
-		Rate.innerHTML = "Rate";
-		Row.appendChild(Rate);
+		// // create row and column for Rate
+		// var Rate = document.createElement("th");
+		// Rate.classList.add("align-left", "small", "bright", "Rate");
+		// Rate.innerHTML = "Rate";
+		// Row.appendChild(Rate);
 
-		Table.appendChild(Row);
-		wrapper.appendChild(Table);
+		// Table.appendChild(Row);
+		// wrapper.appendChild(Table);
 
 		// this gets the key from the key/pair of the element (hasOwnProperty)
 		for (var Key in LICE.quotes) {
@@ -96,11 +97,12 @@ Module.register("MMM-LICE", {
 				//// Learned this on jsfiddle. HOORAY!
 				//// This dynamically creates the div/tags for each element of LICE.quotes
 				var symbols = LICE.quotes;
-				for (var c in symbols) {
-					var newElement = document.createElement("div");
-					newElement.classList.add("align-left", "xsmall", "bright", "symbol");
-					newElement.innerHTML += Key + " &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp " + LICE.quotes[Key]; // + " = " + symbols[c];
-				}
+				// for (var c in symbols) {
+				var newElement = document.createElement("div");
+				newElement.classList.add("align-right", "small", "bright", "symbol");
+				var currency_symbol = Key.replace("USD", "");
+				newElement.innerHTML += currency_symbol + "&nbsp" + LICE.quotes[Key]; // + " = " + symbols[c];
+				// }
 			}
 
 			wrapper.appendChild(newElement);

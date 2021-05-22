@@ -9,7 +9,7 @@
 }
 
 .MMM-LICE .timestamp {
-  color: #ffffff; /* timestamp color. Default is white. */
+  color: gray; /* timestamp color. Default is white. */
 }
 
 .MMM-LICE .source {
