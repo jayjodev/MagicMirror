@@ -9,7 +9,7 @@
 }
 
 .MMM-LICE .timestamp {
-  color: gray; /* timestamp color. Default is white. */
+  color: #ffffff; /* timestamp color. Default is white. */
 }
 
 .MMM-LICE .source {
@@ -18,12 +18,4 @@
 
 .MMM-LICE .symbol {
   color: #ffffff; /* symbols color. Default is white. */
-}
-
-.MMM-LICE .Currency {
-  color: #33fffd; /* Currency color. Default is white. */
-}
-
-.MMM-LICE .Rate {
-  color: #33fffd; /* Exchange color. Default is white. */
 }

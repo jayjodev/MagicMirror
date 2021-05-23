@@ -60,49 +60,22 @@ Module.register("MMM-LICE", {
 		top.classList.add("list-row");
 
 		// timestamp
-		var currentdate = new Date().toLocaleString("en-GB", { timeZone: this.config.timeLocation });
+		var currentdate = new Date().toLocaleString("en-GB", {
+			timeZone: this.config.timeLocation
+		});
 		var timestamp = document.createElement("div");
 		timestamp.classList.add("align-right", "xsmall", "bright", "timestamp");
 		timestamp.innerHTML = "Updated: " + currentdate + " " + this.config.timeLocation;
 		wrapper.appendChild(timestamp);
 
-		// source currency
-		// var source = document.createElement("div");
-		// source.classList.add("align-right", "small", "bright", "source");
-		// source.innerHTML = "Source Currency = " + this.config.source;
-		// wrapper.appendChild(source);
-
-		// // create table
-		// var Table = document.createElement("table");
-
-		// // create row and column for Currency
-		// var Row = document.createElement("tr");
-		// var Column = document.createElement("th");
-		// Column.classList.add("align-left", "small", "bright", "Currency");
-		// Column.innerHTML = "Currency";
-		// Row.appendChild(Column);
-
-		// // create row and column for Rate
-		// var Rate = document.createElement("th");
-		// Rate.classList.add("align-left", "small", "bright", "Rate");
-		// Rate.innerHTML = "Rate";
-		// Row.appendChild(Rate);
-
-		// Table.appendChild(Row);
-		// wrapper.appendChild(Table);
-
 		// this gets the key from the key/pair of the element (hasOwnProperty)
 		for (var Key in LICE.quotes) {
 			if (LICE.quotes.hasOwnProperty(Key)) {
 				//// Learned this on jsfiddle. HOORAY!
-				//// This dynamically creates the div/tags for each element of LICE.quotes
-				var symbols = LICE.quotes;
-				// for (var c in symbols) {
 				var newElement = document.createElement("div");
 				newElement.classList.add("align-right", "small", "bright", "symbol");
 				var currency_symbol = Key.replace("USD", "");
-				newElement.innerHTML += currency_symbol + "&nbsp" + LICE.quotes[Key]; // + " = " + symbols[c];
-				// }
+				newElement.innerHTML += currency_symbol + "&nbsp" + LICE.quotes[Key];
 			}
 
 			wrapper.appendChild(newElement);
