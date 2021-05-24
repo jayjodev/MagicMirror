@@ -9,7 +9,7 @@
  */
 
 var config = {
-	address: "localhost", 	// Address to listen on, can be:
+	address: "0.0.0.0", 	// Address to listen on, can be:
 							// - "localhost", "127.0.0.1", "::1" to listen on loopback interface
 							// - another specific IPv4/6 to listen on a specific interface
 							// - "0.0.0.0", "::" to listen on any interface
@@ -17,7 +17,8 @@ var config = {
 	port: 8080,
 	basePath: "/", 	// The URL path where MagicMirror is hosted. If you are using a Reverse proxy
 					// you must set the sub path here. basePath must end with a /
-	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"], 	// Set [] to allow all IP addresses
+	ipWhitelist: [], // allow all IP addresses
+	//	ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"], 	// Set [] to allow all IP addresses
 															// or add a specific IPv4 of 192.168.1.5 :
 															// ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:192.168.1.5"],
 															// or IPv4 range of 192.168.3.0 --> 192.168.3.15 use CIDR format :
@@ -27,8 +28,9 @@ var config = {
 	httpsPrivateKey: "", 	// HTTPS private key path, only require when useHttps is true
 	httpsCertificate: "", 	// HTTPS Certificate path, only require when useHttps is true
 
-	language: "en",
-	locale: "en-US",
+	language: "ko",
+	locale: "ko-KR",
+	// locale: "en-US",
 	logLevel: ["INFO", "LOG", "WARN", "ERROR"], // Add "DEBUG" for even more logging
 	timeFormat: 24,
 	units: "metric",
@@ -48,45 +50,142 @@ var config = {
 		},
 		{
 			module: "clock",
-			position: "top_left"
+			position: "top_left",
+            config: {
+                timezone: "Asia/Seoul"
+            }
 		},
-		{
+        {
 			module: "calendar",
-			header: "US Holidays",
+			header: "MY SCHEDULE",
 			position: "top_left",
 			config: {
 				calendars: [
 					{
 						symbol: "calendar-check",
-						url: "webcal://www.calendarlabs.com/ical-calendar/ics/76/US_Holidays.ics"					}
+						url: "https://calendar.google.com/calendar/u/0?cid=amF5LmpvLmRldkBnbWFpbC5jb20"
+					}
 				]
 			}
 		},
 		{
-			module: "compliments",
-			position: "lower_third"
-		},
-		{
-			module: "weather",
-			position: "top_right",
+			module: 'calendar_monthly',
+			position: 'top_left',
 			config: {
-				weatherProvider: "openweathermap",
-				type: "current",
-				location: "New York",
-				locationID: "5128581", //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
-				apiKey: "YOUR_OPENWEATHER_API_KEY"
+					// The config property is optional
+					// Without a config, a default month view is shown
+					// Please see the 'Configuration Options' section for more information
 			}
 		},
 		{
 			module: "weather",
-			position: "top_right",
+			position: "top_left",
 			header: "Weather Forecast",
 			config: {
 				weatherProvider: "openweathermap",
 				type: "forecast",
-				location: "New York",
+				location: "Seoul",
 				locationID: "5128581", //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
-				apiKey: "YOUR_OPENWEATHER_API_KEY"
+				apiKey: "My_API_KEY_HERE"
+			}
+		},
+
+		{
+			module: 'MMM-LICE',
+			position: 'top_right',                 // Best in left, center, or right regions
+			config: { 
+				accessKey: "My_API_KEY_HERE",
+				 // Free account & API Access Key at currencylayer.com
+				source: "USD",                    // USD unless you upgrade from free account
+				symbols: "KRW,CAD,EUR",      // Currency symbols
+				useHeader: false,                 
+				header: "Exchange Rate",
+				updateInterval: 12 * 60 * 60 * 1000,
+				timeLocation: "Asia/Seoul"
+				// maxWidth: "300px",
+			}
+		},		
+		{
+			module: "MMM-Jast",
+			position: "top_right",
+			config: {
+				maxWidth: "100%",
+				updateIntervalInSeconds: 300,
+				fadeSpeedInSeconds: 3.5, // Higher value: vertical -> faster // horizontal -> slower
+				scroll: "none", // One of ["none", "vertical", "horizontal"]
+				useGrouping: false,
+				currencyStyle: "code", // One of ["code", "symbol", "name"]
+				showColors: true,
+				showCurrency: true,
+				showChangePercent: true,
+				showChangeValue: false,
+				showChangeValueCurrency: false,
+				showDepot: false,
+				showDepotGrowthPercent: false,
+				showDepotGrowth: false,
+				numberDecimalsValues: 2,
+				numberDecimalsPercentages: 1,
+				stocks: [
+					{ name: "Apple Inc", symbol: "AAPL", tradeCurrency: "KRW", displayCurrency: "KRW"  },
+					{ name: "Microsoft", symbol: "MSFT", tradeCurrency: "KRW", displayCurrency: "KRW" },
+					{ name: "Amazon.com, Inc.", symbol: "AMZN", tradeCurrency: "KRW", displayCurrency: "KRW"  },
+					{ name: "Alphabet Inc Class A", symbol: "GOOGL", tradeCurrency: "KRW", displayCurrency: "KRW"  },
+					{ name: "Facebook", symbol: "FB", tradeCurrency: "KRW", displayCurrency: "KRW"  },
+					{ name: "Moderna", symbol: "MRNA"},
+					{ name: "Pfizer Inc.", symbol: "PFE"},
+				],
+				defaultCurrency: "USD",				
+				// apiKey: "My_API_KEY_HERE",
+			}
+		},
+		{
+			module: "MMM-cryptocurrency",
+			position: "top_right",
+			config: {
+				apikey: 'f51f7b66-c191-4886-8b2f-2a8c4dd3ff86',
+				currency: ['bitcoin', 'bitcoin-cash', 'bitcoin-gold', 'litecoin', 'ethereum', 'ethereum-classic', 'cardano', 'xrp', 'polkadot', 'dogecoin', 'eos'],
+				conversion: 'KRW',
+				headers: ['change24h', 'change7d'],
+				displayType: 'details',
+				fontSize: "xx-small",
+				significantDigits: "5",
+				showGraphs: true
+			}
+		},
+		{
+			module: "weather",
+			position: "top_center",
+			config: {
+				weatherProvider: "openweathermap",
+				type: "current",
+				location: "Seoul",
+				locationID: "1835847", //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file and find your city
+				apiKey: "My_API_KEY_HERE"
+			}
+		},
+		{
+			module: 'MMM-AirQuality',
+			header: "대기오염",
+			position: 'top_center',
+			config: {
+			  location: 'seoul', // the location to check the index for
+			  lang: 'kr',
+			}
+		},	
+		{
+			module: "newsfeed",
+			position: "bottom_bar",
+			config: {
+				feeds: [
+					{
+						title: "JTBC",
+						url: "http://fs.jtbc.joins.com/RSS/economy.xml"
+					},
+				],
+				showSourceTitle: true,
+				showPublishDate: true,
+				broadcastNewsFeeds: true,
+				broadcastNewsUpdates: true
 			}
 		},
 		{
